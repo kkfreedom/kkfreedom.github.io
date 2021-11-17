@@ -39,7 +39,7 @@ params:
 
     sidebar:
         emoji: 🍥
-        subtitle: 愿你单纯,快了,有理想
+        subtitle: 愿你单纯、快乐、有理想
         avatar:
             enabled: true
             local: true
