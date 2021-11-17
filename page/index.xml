@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on 可可积木小屋</title>
+    <link>https://kkfreedom.github.io/page/</link>
+    <description>Recent content in Pages on 可可积木小屋</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://kkfreedom.github.io/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Archives</title>
+      <link>https://kkfreedom.github.io/archives/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://kkfreedom.github.io/about/</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/about/</guid>
+      <description>一枚野生程序员,平平无奇,乏善可陈.
+Keep looking, don&amp;rsquo;t settle!</description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://kkfreedom.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/search/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
