@@ -27,7 +27,7 @@ params:
         - post
     featuredImageField: image
     rssFullContent: true
-    favicon: icon/favicon.ico
+    favicon: img/favicon.ico
 
     footer:
         since: 2020
