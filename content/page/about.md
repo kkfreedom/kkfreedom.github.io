@@ -13,6 +13,6 @@ menu:
             icon: user
 ---
 
- 一枚野生程序员,平平无奇,乏善可陈.
+ 一枚野生程序员.
 
  **Keep looking, don't settle!**
