@@ -177,7 +177,7 @@ menu:
           weight: -100
           params:
               ### For demonstration purpose, the home link will be open in a new tab
-              newTab: true
+              newTab: false
               icon: home
     
     social:
@@ -214,4 +214,8 @@ markup:
         ordered: true
         startLevel: 2
     highlight:
-        noClasses: false
+        noClasses: true
+        codeFences: true
+        guessSyntax: true
+        lineNos: true
+        # style: native
