@@ -4,6 +4,10 @@ title: TCP的三次握手和四次断开
 date: 2019-03-08
 description:
 math: true
+slug: TCP的三次握手和四次断开
+image: cover.jpg
+categories:
+    - 读书
 ---
 
 今天好好的又又又把 tcp 的三次/四次握手学习了一遍，输出一下。

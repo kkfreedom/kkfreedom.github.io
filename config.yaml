@@ -1,5 +1,5 @@
 baseurl: https://kkfreedom.github.io
-languageCode: zh-cn
+languageCode: zh-CN
 theme: hugo-theme-stack
 paginate: 5
 title:  可可积木小屋
@@ -16,7 +16,7 @@ DefaultContentLanguage: zh-cn
 
 # Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
 # This will make .Summary and .WordCount behave correctly for CJK languages.
-hasCJKLanguage: false
+hasCJKLanguage: true
 
 permalinks:
     post: /p/:slug/
@@ -30,7 +30,7 @@ params:
     favicon: /img/favicon.ico
 
     footer:
-        since: 2020
+        since: 2019
         customText:
 
     dateFormat:
@@ -172,7 +172,7 @@ params:
 menu:
     main:
         - identifier: home
-          name: Home
+          name: 主页
           url: /
           weight: -100
           params:

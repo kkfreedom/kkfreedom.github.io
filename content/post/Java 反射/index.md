@@ -10,7 +10,7 @@ tags = [
     "编程",
     "Java"
 ]
-image = "the-creative-exchange-d2zvqp3fpro-unsplash.jpg"
+image = "cover.jpeg"
 +++
 
 # 需求

@@ -1,7 +1,7 @@
 ---
-title: About
-description: 记录菜鸡日常
-date: '2020-02-28'
+title: 关于
+description:
+date: '2019-02-05'
 aliases:
   - about-me
   - contact

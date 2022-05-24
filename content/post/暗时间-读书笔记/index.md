@@ -1,8 +1,9 @@
 ---
 title: 暗时间-读书笔记
 date: 2020-09-09
-slug: test-chinese
-image: helena-hertz-wWZzXlDpMog-unsplash.jpg
+slug: 暗时间-读书笔记
+image: cover.jpeg
+match: true
 categories:
     - 读书
 ---
