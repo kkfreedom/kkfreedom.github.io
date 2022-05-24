@@ -1,5 +1,5 @@
 baseurl: https://kkfreedom.github.io
-languageCode: zh-CN
+languageCode: zh-cn
 theme: hugo-theme-stack
 paginate: 5
 title:  可可积木小屋
