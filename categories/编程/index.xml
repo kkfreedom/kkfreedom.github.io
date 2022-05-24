@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>编程 on 可可积木小屋</title>
+    <link>https://kkfreedom.github.io/categories/%E7%BC%96%E7%A8%8B/</link>
+    <description>Recent content in 编程 on 可可积木小屋</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://kkfreedom.github.io/categories/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mockito</title>
+      <link>https://kkfreedom.github.io/p/mockito/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/p/mockito/</guid>
+      <description>spy() @spy 和 mock() @mock的区别 简单理解：
+ spy是partial mock，spy需要初始化，如果不手动初始化，mocktio默认调用无参构造初始化。 如果Method没有被mock, spy默认调用真实方法，mock不会，对于有返回值的spy返回真实的返回值，mock返回null. 对于spy，通常建议是用doReturn|Answer|Throw()方式打桩（stubbing），否则可能由于调用真实的方法而抛异常。  @Test public void testSpy() { // another option to spies a real object instead of annotation  List&amp;lt;String&amp;gt; list = spy(new ArrayList&amp;lt;&amp;gt;(1)); // java.lang.IndexOutOfBoundsException  // when(list.get(0)).thenReturn(&amp;#34;three&amp;#34;);  // assertEquals(&amp;#34;three&amp;#34;, list.get(0));  // right way to mock  doReturn(&amp;#34;three&amp;#34;).when(list).get(0); assertEquals(&amp;#34;three&amp;#34;, list.get(0)); verify(list, atLeast(1)).get(0); // can pass, so spies is actually a copy of real instance  assertTrue(list.add(&amp;#34;one&amp;#34;)); assertEquals(&amp;#34;three&amp;#34;, list.</description>
+    </item>
+    
+    <item>
+      <title>Gradle实操笔记</title>
+      <link>https://kkfreedom.github.io/p/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/p/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</guid>
+      <description>Gradle在Java开发中可以作为项目构建工具，相比于Maven，Gradle构建更加快速，没有复杂的xml文件，取而代之的是通过脚本完成诸如依赖管理，项目构建配置，插件配置等功能。 Gradle官网提供了详细的文档，Gradle Document，本文记录的是个人在学习以及使用Gradle过程中，使用到的特性以及遇到问题的解决办法。
+ Gradle project结构  gradle_structure  Gradle常用命令  初始化Gradle项目gradle init    $ gradle init Select type of project to generate: 1: basic 2: application 3: library 4: Gradle plugin Enter selection (default: basic) [1..4] 3 Select implementation language: 1: C++ 2: Groovy 3: Java 4: Kotlin 5: Scala 6: Swift Enter selection (default: Java) [1..6] 3 Select build script DSL: 1: Groovy 2: Kotlin Enter selection (default: Groovy) [1.</description>
+    </item>
+    
+    <item>
+      <title>Java 反射</title>
+      <link>https://kkfreedom.github.io/p/java-%E5%8F%8D%E5%B0%84/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kkfreedom.github.io/p/java-%E5%8F%8D%E5%B0%84/</guid>
+      <description>需求 在 Junit 中，有时需要为子类继承自父类的属性赋值，但是父类中的属性没有提供 setter 方法，此时可以使用反射
+ 假设类之间有如下继承关系  父类-RequestBase  子类-SearchRequest     其中父类中 filter 字段未提供 setter 方法，但是在 Junit 中需要为 filter 字段设置值以验证某些场景  实现 SearchRequest request = null; Class&amp;lt;SearchRequest&amp;gt; clazz = SearchRequest.class; request = clazz.newInstance(); // 获取父类 class 对象 Class&amp;lt;? super SearchRequest&amp;gt; superclass = clazz.getSuperclass(); List&amp;lt;Filter&amp;gt; filterList = new ArrayList(); Filter filter = new BuyerFilter(); filter.setPattern(&amp;#34;*&amp;#34;); filter.setType(&amp;#34;java.lang.String&amp;#34;); filter.setSearchFieldName(&amp;#34;name&amp;#34;); filterList.add(filter); // 反射获取父类字段并赋值给子类对象 Field buyFilter = superclass.getDeclaredField(&amp;#34;filter&amp;#34;); buyFilter.setAccessible(true); buyFilter.set(request, buyerFilterList); // 子类字段直接赋值 request.</description>
+    </item>
+    
+  </channel>
+</rss>

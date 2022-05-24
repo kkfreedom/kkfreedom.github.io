@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Java 单元测试框架 Mockito 学习笔记'><title>Mockito</title>
+
+<link rel='canonical' href='https://kkfreedom.github.io/p/mockito/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Mockito'>
+<meta property='og:description' content='Java 单元测试框架 Mockito 学习笔记'>
+<meta property='og:url' content='https://kkfreedom.github.io/p/mockito/'>
+<meta property='og:site_name' content='可可积木小屋'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Java' /><meta property='article:tag' content='编程' /><meta property='article:published_time' content='2019-03-11T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2019-03-11T00:00:00&#43;00:00'/><meta property='og:image' content='https://kkfreedom.github.io/p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg' />
+<meta name="twitter:title" content="Mockito">
+<meta name="twitter:description" content="Java 单元测试框架 Mockito 学习笔记"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://kkfreedom.github.io/p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg' />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_sun_hub2f995dd40e5756879d5cd1cf846e26e_9988_300x0_resize_q75_box.jpeg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+            </figure>
+            
+        
+        
+        <h1 class="site-name"><a href="/">可可积木小屋</a></h1>
+        <h2 class="site-description"></h2><ol class="social-menu">
+                
+                    <li>
+                        <a 
+                            href='https://github.com/kkfreedom'
+                            target="_blank"
+                            title="GitHub"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a 
+                            href='https://instagram.com/fengchaop/'
+                            target="_blank"
+                            title="Instagram"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <rect x="4" y="4" width="16" height="16" rx="4" />
+  <circle cx="12" cy="12" r="3" />
+  <line x1="16.5" y1="7.5" x2="16.5" y2="7.501" />
+</svg>
+
+                            
+                        </a>
+                    </li>
+                
+            </ol></header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/mockito/">
+                <img src="/p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg"
+                        srcset="/p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg 800w, /p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg 1600w"
+                        width="800" 
+                        height="534" 
+                        loading="lazy"
+                        alt="Featured image of post Mockito" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%BC%96%E7%A8%8B/" >
+                编程
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/mockito/">Mockito</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        Java 单元测试框架 Mockito 学习笔记
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 11, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="spy-spy-和-mock-mock的区别">spy() @spy 和 mock() @mock的区别</h1>
+<p>简单理解：</p>
+<ul>
+<li>spy是partial mock，spy需要初始化，如果不手动初始化，mocktio默认调用<strong>无参构造</strong>初始化。</li>
+<li>如果Method没有被mock, spy默认调用真实方法，mock不会，对于有返回值的spy返回真实的返回值，mock返回null.</li>
+<li>对于spy，通常建议是用<code>doReturn|Answer|Throw()</code>方式打桩（stubbing），否则可能由于调用真实的方法而抛异常。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java">    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSpy</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="c1">// another option to spies a real object instead of annotation
+</span><span class="c1"></span>        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">1</span><span class="o">));</span>
+        <span class="c1">// java.lang.IndexOutOfBoundsException
+</span><span class="c1"></span>        <span class="c1">// when(list.get(0)).thenReturn(&#34;three&#34;);
+</span><span class="c1"></span>        <span class="c1">// assertEquals(&#34;three&#34;, list.get(0));
+</span><span class="c1"></span>
+        <span class="c1">// right way to mock
+</span><span class="c1"></span>        <span class="n">doReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">list</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+        <span class="n">verify</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">atLeast</span><span class="o">(</span><span class="n">1</span><span class="o">)).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+
+        <span class="c1">// can pass, so spies is actually a copy of real instance
+</span><span class="c1"></span>        <span class="n">assertTrue</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;one&#34;</span><span class="o">));</span>
+
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1
+</span><span class="c1"></span>        <span class="n">list</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span> <span class="c1">// one
+</span><span class="c1"></span>    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMock</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">List</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="c1">// below both work fine
+</span><span class="c1"></span>        <span class="n">when</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+
+        <span class="n">doReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">list</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;one&#34;</span><span class="o">);</span>
+        <span class="c1">// assertTrue(list.add(&#34;one&#34;)); // java.lang.AssertionError
+</span><span class="c1"></span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 0
+</span><span class="c1"></span>        <span class="n">list</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span> <span class="c1">//
+</span><span class="c1"></span>    <span class="o">}</span>
+</code></pre></div><p>但是，<code>doReturn</code>也有缺陷，<code>doReturn</code>可以接任意objects，所以是No type safety, <a class="link" href="https://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html"  target="_blank" rel="noopener"
+    >参考</a></p>
+<h1 id="mock一个object实际上会默认mock所有的方法">Mock一个object实际上会默认mock所有的方法</h1>
+<p>如果方法没有被打桩，有返回值的默认返回null, 返回boolean值的默认返回false，返回int/integer的默认返回0，void方法默认do nothing。</p>
+<p><a class="link" href="https://www.cnblogs.com/softidea/p/4204389.html"  target="_blank" rel="noopener"
+    >以下例子引用自</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">spy_Procession_Demo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Jack</span> <span class="n">spyJack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">Jack</span><span class="o">());</span>
+        <span class="c1">//使用spy的桩实现实际还是会调用stub的方法，只是返回了stub的值
+</span><span class="c1"></span>        <span class="n">when</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span> <span class="c1">// I say go go go!!
+</span><span class="c1"></span>        <span class="n">assertFalse</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">());</span> 
+        <span class="n">verify</span><span class="o">(</span><span class="n">spyJack</span><span class="o">).</span><span class="na">go</span><span class="o">();</span>
+
+        <span class="c1">//不会调用stub的方法
+</span><span class="c1"></span>        <span class="n">doReturn</span><span class="o">(</span><span class="kc">false</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">spyJack</span><span class="o">).</span><span class="na">go</span><span class="o">();</span>
+        <span class="n">assertFalse</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">());</span> <span class="c1">// nothing print
+</span><span class="c1"></span>    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">callRealMethodTest</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Jerry</span> <span class="n">jerry</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jerry</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">doCallRealMethod</span><span class="o">().</span><span class="na">when</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">goHome</span><span class="o">();</span>
+        <span class="n">doCallRealMethod</span><span class="o">().</span><span class="na">when</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingB</span><span class="o">();</span>
+        <span class="c1">// doCallRealMethod().when(jerry).returnInteger();
+</span><span class="c1"></span>
+        <span class="n">jerry</span><span class="o">.</span><span class="na">goHome</span><span class="o">();</span> <span class="c1">// good day
+</span><span class="c1"></span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">jerry</span><span class="o">.</span><span class="na">returnInteger</span><span class="o">());</span>
+        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">returnInteger</span><span class="o">();</span>
+        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingA</span><span class="o">();</span>
+        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingB</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">go</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;I say go go go!!&#34;</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Jerry</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">goHome</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">doSomeThingA</span><span class="o">();</span>
+        <span class="n">doSomeThingB</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">// real invoke it.
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomeThingB</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;good day&#34;</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="c1">// auto mock method by mockito
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomeThingA</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;you should not see this message.&#34;</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">returnInteger</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="k">return</span> <span class="n">1</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><h1 id="doanswer">doAnswer</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">doAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;)</span> <span class="n">inv</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">name</span> <span class="o">+=</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
+            <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+        <span class="o">}).</span><span class="na">when</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">rename</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">&#34;Jackson&#34;</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">go</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;I say go go go!!&#34;</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>use spy then test doAnswer, 由以下例子可以看出对于spy()，<code>doAnswer</code>不会调用真实方法，而<code>thenAnswer</code>会调用真实方法。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">doAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;)</span> <span class="n">inv</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">name</span> <span class="o">+=</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
+            <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+        <span class="o">}).</span><span class="na">when</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+        
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span> <span class="c1">// passed but print nothing
+</span><span class="c1"></span>    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+        <span class="n">when</span><span class="o">(</span><span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">)).</span><span class="na">thenAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span> <span class="o">&gt;)</span> <span class="n">invocation</span> <span class="o">-&gt;</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
+        <span class="o">});</span> <span class="c1">// print: real invoke!!
+</span><span class="c1"></span>
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span> 
+        <span class="c1">// tests failed, print real invoke!! expeced: Leo_suffix Actual: Leo
+</span><span class="c1"></span>    <span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">rename</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;real invoke!!&#34;</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">&#34;Jackson&#34;</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><h1 id="argumentcaptor">ArgumentCaptor</h1>
+<p>使用<em>ArgumentCaptor</em>可以断言方法的参数</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testArgCaptor</span><span class="o">()</span>
+    <span class="o">{</span>
+        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">String</span> <span class="o">&gt;</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">rename</span> <span class="o">=</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">);</span>
+        <span class="n">verify</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">capture</span><span class="o">());</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;should be Jack&#34;</span><span class="o">,</span> <span class="s">&#34;Jack&#34;</span><span class="o">,</span> <span class="n">argument</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div><ul>
+<li>值得注意的是，通常<em>ArgumentCaptor</em>使用在verfify中而不是在打桩时候，Mockito官方文档给出的例子是，如果想在打桩时候使用<strong>ArgumentMatcher</strong>更适合。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">   <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">Person</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+   <span class="n">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">).</span><span class="na">doSomething</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">capture</span><span class="o">());</span>
+   <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;John&#34;</span><span class="o">,</span> <span class="n">argument</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</code></pre></div><blockquote>
+<p><strong>Warning:</strong> it is recommended to use ArgumentCaptor with verification <strong>but not</strong> with stubbing. Using ArgumentCaptor with stubbing may decrease test readability because captor is created outside of assert (aka verify or &lsquo;then&rsquo;) block. Also it may reduce defect localization because if stubbed method was not called then no argument is captured.
+In a way ArgumentCaptor is related to custom argument matchers (see javadoc for <a class="link" href="https://javadoc.io/static/org.mockito/mockito-core/3.7.7/org/mockito/ArgumentMatcher.html"  title="interface in org.mockito"
+     target="_blank" rel="noopener"
+    ><code>ArgumentMatcher</code></a> class). Both techniques can be used for making sure certain arguments were passed to mocks. However, ArgumentCaptor may be a better fit if:</p>
+<ul>
+<li>custom argument matcher is not likely to be reused</li>
+<li>you just need it to assert on argument values to complete verification
+Custom argument matchers via <a class="link" href="https://javadoc.io/static/org.mockito/mockito-core/3.7.7/org/mockito/ArgumentMatcher.html"  title="interface in org.mockito"
+     target="_blank" rel="noopener"
+    ><code>ArgumentMatcher</code></a> are usually better for stubbing.</li>
+</ul>
+</blockquote>
+<p>以下引用的例子用来解释为什么打桩时候使用<strong>ArgumentMatcher</strong>更适合。</p>
+<blockquote>
+<p>Assuming the following method to test:
+<code>public boolean doSomething(SomeClass arg);</code>
+Mockito documentation says that you should not use captor in this way:
+<code>when(someObject.doSomething(argumentCaptor.capture())).thenReturn(true);</code>
+<code> assertThat(argumentCaptor.getValue(), equalTo(expected));</code>
+Because you can just use matcher during stubbing:
+<code>when(someObject.doSomething(eq(expected))).thenReturn(true);</code></p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/java/">Java</a>
+        
+            <a href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                <img src="/p/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/_hu958d513eeefe5556a31d065479ecc5ac_14205_7bffa90d1e66ca9b8184fda08a99dc7e.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-jq4GZk3fs&#43;jcbgAHVstwOw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Gradle实操笔记</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/java-%E5%8F%8D%E5%B0%84/">
+        
+        
+            <div class="article-image">
+                <img src="/p/java-%E5%8F%8D%E5%B0%84/_huf941de4769045cdfa8c9ee7036519a2a_35369_36687b530fa140121781e790cfd060e7.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-YBFrHM/IYy6aZffVHfPvwg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Java 反射</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2022 可可积木小屋
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
