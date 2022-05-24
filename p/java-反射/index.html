@@ -14,7 +14,23 @@
 <meta name="twitter:description" content="通过反射给没有 setter 方法的属性赋值，包括父类属性"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://kkfreedom.github.io/p/java-%E5%8F%8D%E5%B0%84/the-creative-exchange-d2zvqp3fpro-unsplash.jpg' />
     <link rel="shortcut icon" href="/img/favicon.ico" />
+<style>
+    :root {
+        --article-font-family: "Noto Serif SC", var(--base-font-family);
+    }
+</style>
 
+<script>
+		(function () {
+		    const customFont = document.createElement('link');
+		    customFont.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap";
+		
+		    customFont.type = "text/css";
+		    customFont.rel = "stylesheet";
+		
+		    document.head.appendChild(customFont);
+		}());
+</script>
     </head>
     <body class="
     article-page 
@@ -122,7 +138,7 @@
         
 
         <li >
-            <a href='/' target="_blank">
+            <a href='/' >
                 
                 
                 
@@ -317,25 +333,49 @@
 <li>其中父类中 filter 字段未提供 setter 方法，但是在 Junit 中需要为 filter 字段设置值以验证某些场景</li>
 </ul>
 <h1 id="实现">实现</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="n">SearchRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-<span class="n">Class</span><span class="o">&lt;</span><span class="n">SearchRequest</span><span class="o">&gt;</span> <span class="n">clazz</span> <span class="o">=</span> <span class="n">SearchRequest</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
-<span class="n">request</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
-<span class="c1">// 获取父类 class 对象
-</span><span class="c1"></span><span class="n">Class</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="n">SearchRequest</span><span class="o">&gt;</span> <span class="n">superclass</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">getSuperclass</span><span class="o">();</span>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+Class<span style="color:#f92672">&lt;</span>SearchRequest<span style="color:#f92672">&gt;</span> clazz <span style="color:#f92672">=</span> SearchRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">;</span>
+request <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">();</span>
+<span style="color:#75715e">// 获取父类 class 对象
+</span><span style="color:#75715e"></span>Class<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> SearchRequest<span style="color:#f92672">&gt;</span> superclass <span style="color:#f92672">=</span> clazz<span style="color:#f92672">.</span><span style="color:#a6e22e">getSuperclass</span><span style="color:#f92672">();</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Filter</span><span class="o">&gt;</span> <span class="n">filterList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
-<span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BuyerFilter</span><span class="o">();</span>
-<span class="n">filter</span><span class="o">.</span><span class="na">setPattern</span><span class="o">(</span><span class="s">&#34;*&#34;</span><span class="o">);</span>
-<span class="n">filter</span><span class="o">.</span><span class="na">setType</span><span class="o">(</span><span class="s">&#34;java.lang.String&#34;</span><span class="o">);</span>
-<span class="n">filter</span><span class="o">.</span><span class="na">setSearchFieldName</span><span class="o">(</span><span class="s">&#34;name&#34;</span><span class="o">);</span>
-<span class="n">filterList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
-<span class="c1">// 反射获取父类字段并赋值给子类对象
-</span><span class="c1"></span><span class="n">Field</span> <span class="n">buyFilter</span> <span class="o">=</span> <span class="n">superclass</span><span class="o">.</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="s">&#34;filter&#34;</span><span class="o">);</span>
-<span class="n">buyFilter</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-<span class="n">buyFilter</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">buyerFilterList</span><span class="o">);</span>
-<span class="c1">// 子类字段直接赋值
-</span><span class="c1"></span><span class="n">request</span><span class="o">.</span><span class="na">setLocale</span><span class="o">(</span><span class="s">&#34;en_US&#34;</span><span class="o">);</span>
-</code></pre></div>
+List<span style="color:#f92672">&lt;</span>Filter<span style="color:#f92672">&gt;</span> filterList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
+Filter filter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BuyerFilter<span style="color:#f92672">();</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">setPattern</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">);</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">setType</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">);</span>
+filter<span style="color:#f92672">.</span><span style="color:#a6e22e">setSearchFieldName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">);</span>
+filterList<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>filter<span style="color:#f92672">);</span>
+<span style="color:#75715e">// 反射获取父类字段并赋值给子类对象
+</span><span style="color:#75715e"></span>Field buyFilter <span style="color:#f92672">=</span> superclass<span style="color:#f92672">.</span><span style="color:#a6e22e">getDeclaredField</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filter&#34;</span><span style="color:#f92672">);</span>
+buyFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">setAccessible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+buyFilter<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>request<span style="color:#f92672">,</span> buyerFilterList<span style="color:#f92672">);</span>
+<span style="color:#75715e">// 子类字段直接赋值
+</span><span style="color:#75715e"></span>request<span style="color:#f92672">.</span><span style="color:#a6e22e">setLocale</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;en_US&#34;</span><span style="color:#f92672">);</span>
+</code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

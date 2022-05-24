@@ -14,7 +14,23 @@
 <meta name="twitter:description" content="Java 单元测试框架 Mockito 学习笔记"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://kkfreedom.github.io/p/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg' />
     <link rel="shortcut icon" href="/img/favicon.ico" />
+<style>
+    :root {
+        --article-font-family: "Noto Serif SC", var(--base-font-family);
+    }
+</style>
 
+<script>
+		(function () {
+		    const customFont = document.createElement('link');
+		    customFont.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap";
+		
+		    customFont.type = "text/css";
+		    customFont.rel = "stylesheet";
+		
+		    document.head.appendChild(customFont);
+		}());
+</script>
     </head>
     <body class="
     article-page 
@@ -122,7 +138,7 @@
         
 
         <li >
-            <a href='/' target="_blank">
+            <a href='/' >
                 
                 
                 
@@ -292,7 +308,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 4 分钟
                 </time>
             </div>
         
@@ -309,200 +325,416 @@
 <li>如果Method没有被mock, spy默认调用真实方法，mock不会，对于有返回值的spy返回真实的返回值，mock返回null.</li>
 <li>对于spy，通常建议是用<code>doReturn|Answer|Throw()</code>方式打桩（stubbing），否则可能由于调用真实的方法而抛异常。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java">    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSpy</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="c1">// another option to spies a real object instead of annotation
-</span><span class="c1"></span>        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="n">1</span><span class="o">));</span>
-        <span class="c1">// java.lang.IndexOutOfBoundsException
-</span><span class="c1"></span>        <span class="c1">// when(list.get(0)).thenReturn(&#34;three&#34;);
-</span><span class="c1"></span>        <span class="c1">// assertEquals(&#34;three&#34;, list.get(0));
-</span><span class="c1"></span>
-        <span class="c1">// right way to mock
-</span><span class="c1"></span>        <span class="n">doReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">list</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
-        <span class="n">verify</span><span class="o">(</span><span class="n">list</span><span class="o">,</span> <span class="n">atLeast</span><span class="o">(</span><span class="n">1</span><span class="o">)).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Java" data-lang="Java">    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSpy</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// another option to spies a real object instead of annotation
+</span><span style="color:#75715e"></span>        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> list <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>1<span style="color:#f92672">));</span>
+        <span style="color:#75715e">// java.lang.IndexOutOfBoundsException
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// when(list.get(0)).thenReturn(&#34;three&#34;);
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// assertEquals(&#34;three&#34;, list.get(0));
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// right way to mock
+</span><span style="color:#75715e"></span>        doReturn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>list<span style="color:#f92672">).</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
+        verify<span style="color:#f92672">(</span>list<span style="color:#f92672">,</span> atLeast<span style="color:#f92672">(</span>1<span style="color:#f92672">)).</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
 
-        <span class="c1">// can pass, so spies is actually a copy of real instance
-</span><span class="c1"></span>        <span class="n">assertTrue</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;one&#34;</span><span class="o">));</span>
+        <span style="color:#75715e">// can pass, so spies is actually a copy of real instance
+</span><span style="color:#75715e"></span>        assertTrue<span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">));</span>
 
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 1
-</span><span class="c1"></span>        <span class="n">list</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span> <span class="c1">// one
-</span><span class="c1"></span>    <span class="o">}</span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span> <span style="color:#75715e">// 1
+</span><span style="color:#75715e"></span>        list<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span> <span style="color:#75715e">// one
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMock</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">List</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="c1">// below both work fine
-</span><span class="c1"></span>        <span class="n">when</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">);</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMock</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        List list <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>List<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        <span style="color:#75715e">// below both work fine
+</span><span style="color:#75715e"></span>        when<span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">)).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
 
-        <span class="n">doReturn</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">list</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
+        doReturn<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>list<span style="color:#f92672">).</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">);</span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
 
-        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&#34;one&#34;</span><span class="o">);</span>
-        <span class="c1">// assertTrue(list.add(&#34;one&#34;)); // java.lang.AssertionError
-</span><span class="c1"></span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;three&#34;</span><span class="o">,</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">());</span> <span class="c1">// 0
-</span><span class="c1"></span>        <span class="n">list</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span> <span class="c1">//
-</span><span class="c1"></span>    <span class="o">}</span>
-</code></pre></div><p>但是，<code>doReturn</code>也有缺陷，<code>doReturn</code>可以接任意objects，所以是No type safety, <a class="link" href="https://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html"  target="_blank" rel="noopener"
+        list<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;one&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#75715e">// assertTrue(list.add(&#34;one&#34;)); // java.lang.AssertionError
+</span><span style="color:#75715e"></span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;three&#34;</span><span style="color:#f92672">,</span> list<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>0<span style="color:#f92672">));</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span> <span style="color:#75715e">// 0
+</span><span style="color:#75715e"></span>        list<span style="color:#f92672">.</span><span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">::</span>println<span style="color:#f92672">);</span> <span style="color:#75715e">//
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是，<code>doReturn</code>也有缺陷，<code>doReturn</code>可以接任意objects，所以是No type safety, <a class="link" href="https://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html"  target="_blank" rel="noopener"
     >参考</a></p>
 <h1 id="mock一个object实际上会默认mock所有的方法">Mock一个object实际上会默认mock所有的方法</h1>
 <p>如果方法没有被打桩，有返回值的默认返回null, 返回boolean值的默认返回false，返回int/integer的默认返回0，void方法默认do nothing。</p>
 <p><a class="link" href="https://www.cnblogs.com/softidea/p/4204389.html"  target="_blank" rel="noopener"
     >以下例子引用自</a></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">spy_Procession_Demo</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">Jack</span> <span class="n">spyJack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="k">new</span> <span class="n">Jack</span><span class="o">());</span>
-        <span class="c1">//使用spy的桩实现实际还是会调用stub的方法，只是返回了stub的值
-</span><span class="c1"></span>        <span class="n">when</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">()).</span><span class="na">thenReturn</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span> <span class="c1">// I say go go go!!
-</span><span class="c1"></span>        <span class="n">assertFalse</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">());</span> 
-        <span class="n">verify</span><span class="o">(</span><span class="n">spyJack</span><span class="o">).</span><span class="na">go</span><span class="o">();</span>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">spy_Procession_Demo</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Jack spyJack <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Jack<span style="color:#f92672">());</span>
+        <span style="color:#75715e">//使用spy的桩实现实际还是会调用stub的方法，只是返回了stub的值
+</span><span style="color:#75715e"></span>        when<span style="color:#f92672">(</span>spyJack<span style="color:#f92672">.</span><span style="color:#a6e22e">go</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">thenReturn</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span> <span style="color:#75715e">// I say go go go!!
+</span><span style="color:#75715e"></span>        assertFalse<span style="color:#f92672">(</span>spyJack<span style="color:#f92672">.</span><span style="color:#a6e22e">go</span><span style="color:#f92672">());</span> 
+        verify<span style="color:#f92672">(</span>spyJack<span style="color:#f92672">).</span><span style="color:#a6e22e">go</span><span style="color:#f92672">();</span>
 
-        <span class="c1">//不会调用stub的方法
-</span><span class="c1"></span>        <span class="n">doReturn</span><span class="o">(</span><span class="kc">false</span><span class="o">).</span><span class="na">when</span><span class="o">(</span><span class="n">spyJack</span><span class="o">).</span><span class="na">go</span><span class="o">();</span>
-        <span class="n">assertFalse</span><span class="o">(</span><span class="n">spyJack</span><span class="o">.</span><span class="na">go</span><span class="o">());</span> <span class="c1">// nothing print
-</span><span class="c1"></span>    <span class="o">}</span>
+        <span style="color:#75715e">//不会调用stub的方法
+</span><span style="color:#75715e"></span>        doReturn<span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>spyJack<span style="color:#f92672">).</span><span style="color:#a6e22e">go</span><span style="color:#f92672">();</span>
+        assertFalse<span style="color:#f92672">(</span>spyJack<span style="color:#f92672">.</span><span style="color:#a6e22e">go</span><span style="color:#f92672">());</span> <span style="color:#75715e">// nothing print
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">callRealMethodTest</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">Jerry</span> <span class="n">jerry</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jerry</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callRealMethodTest</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Jerry jerry <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Jerry<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
-        <span class="n">doCallRealMethod</span><span class="o">().</span><span class="na">when</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">goHome</span><span class="o">();</span>
-        <span class="n">doCallRealMethod</span><span class="o">().</span><span class="na">when</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingB</span><span class="o">();</span>
-        <span class="c1">// doCallRealMethod().when(jerry).returnInteger();
-</span><span class="c1"></span>
-        <span class="n">jerry</span><span class="o">.</span><span class="na">goHome</span><span class="o">();</span> <span class="c1">// good day
-</span><span class="c1"></span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">jerry</span><span class="o">.</span><span class="na">returnInteger</span><span class="o">());</span>
-        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">returnInteger</span><span class="o">();</span>
-        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingA</span><span class="o">();</span>
-        <span class="n">verify</span><span class="o">(</span><span class="n">jerry</span><span class="o">).</span><span class="na">doSomeThingB</span><span class="o">();</span>
-    <span class="o">}</span>
+        doCallRealMethod<span style="color:#f92672">().</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>jerry<span style="color:#f92672">).</span><span style="color:#a6e22e">goHome</span><span style="color:#f92672">();</span>
+        doCallRealMethod<span style="color:#f92672">().</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>jerry<span style="color:#f92672">).</span><span style="color:#a6e22e">doSomeThingB</span><span style="color:#f92672">();</span>
+        <span style="color:#75715e">// doCallRealMethod().when(jerry).returnInteger();
+</span><span style="color:#75715e"></span>
+        jerry<span style="color:#f92672">.</span><span style="color:#a6e22e">goHome</span><span style="color:#f92672">();</span> <span style="color:#75715e">// good day
+</span><span style="color:#75715e"></span>
+        assertEquals<span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> jerry<span style="color:#f92672">.</span><span style="color:#a6e22e">returnInteger</span><span style="color:#f92672">());</span>
+        verify<span style="color:#f92672">(</span>jerry<span style="color:#f92672">).</span><span style="color:#a6e22e">returnInteger</span><span style="color:#f92672">();</span>
+        verify<span style="color:#f92672">(</span>jerry<span style="color:#f92672">).</span><span style="color:#a6e22e">doSomeThingA</span><span style="color:#f92672">();</span>
+        verify<span style="color:#f92672">(</span>jerry<span style="color:#f92672">).</span><span style="color:#a6e22e">doSomeThingB</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
 
-<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">go</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;I say go go go!!&#34;</span><span class="o">);</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jack</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">go</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I say go go go!!&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-<span class="kd">class</span> <span class="nc">Jerry</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">goHome</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">doSomeThingA</span><span class="o">();</span>
-        <span class="n">doSomeThingB</span><span class="o">();</span>
-    <span class="o">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jerry</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">goHome</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        doSomeThingA<span style="color:#f92672">();</span>
+        doSomeThingB<span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
 
-    <span class="c1">// real invoke it.
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomeThingB</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;good day&#34;</span><span class="o">);</span>
+    <span style="color:#75715e">// real invoke it.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomeThingB</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;good day&#34;</span><span style="color:#f92672">);</span>
 
-    <span class="o">}</span>
+    <span style="color:#f92672">}</span>
 
-    <span class="c1">// auto mock method by mockito
-</span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomeThingA</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;you should not see this message.&#34;</span><span class="o">);</span>
+    <span style="color:#75715e">// auto mock method by mockito
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSomeThingA</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;you should not see this message.&#34;</span><span style="color:#f92672">);</span>
 
-    <span class="o">}</span>
+    <span style="color:#f92672">}</span>
 
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">returnInteger</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="k">return</span> <span class="n">1</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div><h1 id="doanswer">doAnswer</h1>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">doAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;)</span> <span class="n">inv</span> <span class="o">-&gt;</span> <span class="o">{</span>
-            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-            <span class="n">name</span> <span class="o">+=</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
-            <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-        <span class="o">}).</span><span class="na">when</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">returnInteger</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> 1<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="doanswer">doAnswer</h1>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDoAnswer</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        Jack jack <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Jack<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        doAnswer<span style="color:#f92672">((</span>Answer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;)</span> inv <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+            String name <span style="color:#f92672">=</span> inv<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgument</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+            name <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>jack<span style="color:#f92672">).</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>anyString<span style="color:#f92672">());</span>
 
-        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
-    <span class="o">}</span>
-<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+        String name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Leo&#34;</span><span style="color:#f92672">;</span>
+        assertEquals<span style="color:#f92672">(</span>name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">,</span> jack<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>name<span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jack</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
 
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">rename</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
-    <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
-            <span class="k">return</span> <span class="s">&#34;Jackson&#34;</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">go</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;I say go go go!!&#34;</span><span class="o">);</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div><p>use spy then test doAnswer, 由以下例子可以看出对于spy()，<code>doAnswer</code>不会调用真实方法，而<code>thenAnswer</code>会调用真实方法。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">doAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;)</span> <span class="n">inv</span> <span class="o">-&gt;</span> <span class="o">{</span>
-            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-            <span class="n">name</span> <span class="o">+=</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
-            <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-        <span class="o">}).</span><span class="na">when</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">anyString</span><span class="o">());</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Jack&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>name<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Jackson&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">go</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;I say go go go!!&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>use spy then test doAnswer, 由以下例子可以看出对于spy()，<code>doAnswer</code>不会调用真实方法，而<code>thenAnswer</code>会调用真实方法。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDoAnswer</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        Jack jack <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span>Jack<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        doAnswer<span style="color:#f92672">((</span>Answer<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;)</span> inv <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+            String name <span style="color:#f92672">=</span> inv<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgument</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+            name <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}).</span><span style="color:#a6e22e">when</span><span style="color:#f92672">(</span>jack<span style="color:#f92672">).</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>anyString<span style="color:#f92672">());</span>
         
-        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span> <span class="c1">// passed but print nothing
-</span><span class="c1"></span>    <span class="o">}</span>
+        String name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Leo&#34;</span><span style="color:#f92672">;</span>
+        assertEquals<span style="color:#f92672">(</span>name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">,</span> jack<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>name<span style="color:#f92672">));</span> <span style="color:#75715e">// passed but print nothing
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 
-    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDoAnswer</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">spy</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDoAnswer</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        Jack jack <span style="color:#f92672">=</span> spy<span style="color:#f92672">(</span>Jack<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
 
-        <span class="n">when</span><span class="o">(</span><span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">)).</span><span class="na">thenAnswer</span><span class="o">((</span><span class="n">Answer</span><span class="o">&lt;</span><span class="n">String</span> <span class="o">&gt;)</span> <span class="n">invocation</span> <span class="o">-&gt;</span> <span class="o">{</span>
-            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">invocation</span><span class="o">.</span><span class="na">getArgument</span><span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-            <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">;</span>
-        <span class="o">});</span> <span class="c1">// print: real invoke!!
-</span><span class="c1"></span>
-        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#34;Leo&#34;</span><span class="o">;</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&#34;_suffix&#34;</span><span class="o">,</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="n">name</span><span class="o">));</span> 
-        <span class="c1">// tests failed, print real invoke!! expeced: Leo_suffix Actual: Leo
-</span><span class="c1"></span>    <span class="o">}</span>
+        when<span style="color:#f92672">(</span>jack<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Jack&#34;</span><span style="color:#f92672">)).</span><span style="color:#a6e22e">thenAnswer</span><span style="color:#f92672">((</span>Answer<span style="color:#f92672">&lt;</span>String <span style="color:#f92672">&gt;)</span> invocation <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+            String name <span style="color:#f92672">=</span> invocation<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgument</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">});</span> <span style="color:#75715e">// print: real invoke!!
+</span><span style="color:#75715e"></span>
+        String name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Leo&#34;</span><span style="color:#f92672">;</span>
+        assertEquals<span style="color:#f92672">(</span>name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_suffix&#34;</span><span style="color:#f92672">,</span> jack<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>name<span style="color:#f92672">));</span> 
+        <span style="color:#75715e">// tests failed, print real invoke!! expeced: Leo_suffix Actual: Leo
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
 
-<span class="kd">class</span> <span class="nc">Jack</span> <span class="o">{</span>
-    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Jack</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
 
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">rename</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span>
-    <span class="o">{</span>
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;real invoke!!&#34;</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
-            <span class="k">return</span> <span class="s">&#34;Jackson&#34;</span><span class="o">;</span>
-        <span class="o">}</span>
-        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div><h1 id="argumentcaptor">ArgumentCaptor</h1>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;real invoke!!&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Jack&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>name<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Jackson&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="argumentcaptor">ArgumentCaptor</h1>
 <p>使用<em>ArgumentCaptor</em>可以断言方法的参数</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">    <span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testArgCaptor</span><span class="o">()</span>
-    <span class="o">{</span>
-        <span class="n">Jack</span> <span class="n">jack</span> <span class="o">=</span> <span class="n">mock</span><span class="o">(</span><span class="n">Jack</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">String</span> <span class="o">&gt;</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">String</span> <span class="n">rename</span> <span class="o">=</span> <span class="n">jack</span><span class="o">.</span><span class="na">rename</span><span class="o">(</span><span class="s">&#34;Jack&#34;</span><span class="o">);</span>
-        <span class="n">verify</span><span class="o">(</span><span class="n">jack</span><span class="o">).</span><span class="na">rename</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">capture</span><span class="o">());</span>
-        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;should be Jack&#34;</span><span class="o">,</span> <span class="s">&#34;Jack&#34;</span><span class="o">,</span> <span class="n">argument</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
-    <span class="o">}</span>
-</code></pre></div><ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testArgCaptor</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        Jack jack <span style="color:#f92672">=</span> mock<span style="color:#f92672">(</span>Jack<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        ArgumentCaptor<span style="color:#f92672">&lt;</span>String <span style="color:#f92672">&gt;</span> argument <span style="color:#f92672">=</span> ArgumentCaptor<span style="color:#f92672">.</span><span style="color:#a6e22e">forClass</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        String rename <span style="color:#f92672">=</span> jack<span style="color:#f92672">.</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Jack&#34;</span><span style="color:#f92672">);</span>
+        verify<span style="color:#f92672">(</span>jack<span style="color:#f92672">).</span><span style="color:#a6e22e">rename</span><span style="color:#f92672">(</span>argument<span style="color:#f92672">.</span><span style="color:#a6e22e">capture</span><span style="color:#f92672">());</span>
+        assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;should be Jack&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Jack&#34;</span><span style="color:#f92672">,</span> argument<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>值得注意的是，通常<em>ArgumentCaptor</em>使用在verfify中而不是在打桩时候，Mockito官方文档给出的例子是，如果想在打桩时候使用<strong>ArgumentMatcher</strong>更适合。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java">   <span class="n">ArgumentCaptor</span><span class="o">&lt;</span><span class="n">Person</span><span class="o">&gt;</span> <span class="n">argument</span> <span class="o">=</span> <span class="n">ArgumentCaptor</span><span class="o">.</span><span class="na">forClass</span><span class="o">(</span><span class="n">Person</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-   <span class="n">verify</span><span class="o">(</span><span class="n">mock</span><span class="o">).</span><span class="na">doSomething</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">capture</span><span class="o">());</span>
-   <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;John&#34;</span><span class="o">,</span> <span class="n">argument</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
-</code></pre></div><blockquote>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">   ArgumentCaptor<span style="color:#f92672">&lt;</span>Person<span style="color:#f92672">&gt;</span> argument <span style="color:#f92672">=</span> ArgumentCaptor<span style="color:#f92672">.</span><span style="color:#a6e22e">forClass</span><span style="color:#f92672">(</span>Person<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+   verify<span style="color:#f92672">(</span>mock<span style="color:#f92672">).</span><span style="color:#a6e22e">doSomething</span><span style="color:#f92672">(</span>argument<span style="color:#f92672">.</span><span style="color:#a6e22e">capture</span><span style="color:#f92672">());</span>
+   assertEquals<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;John&#34;</span><span style="color:#f92672">,</span> argument<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">());</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p><strong>Warning:</strong> it is recommended to use ArgumentCaptor with verification <strong>but not</strong> with stubbing. Using ArgumentCaptor with stubbing may decrease test readability because captor is created outside of assert (aka verify or &lsquo;then&rsquo;) block. Also it may reduce defect localization because if stubbed method was not called then no argument is captured.
 In a way ArgumentCaptor is related to custom argument matchers (see javadoc for <a class="link" href="https://javadoc.io/static/org.mockito/mockito-core/3.7.7/org/mockito/ArgumentMatcher.html"  title="interface in org.mockito"
      target="_blank" rel="noopener"

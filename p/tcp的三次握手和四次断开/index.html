@@ -25,7 +25,23 @@
 四次断开 再借一张图：  image 
 自己总结 用自己的白话来讲就是，tcp 不管建立连接还是关闭连接，都有 sync/fin - ack 的过程，从client 和 server 出发来讲都是如此。 之所以建立连接只需要三次，是因为，当 server接到 client 的 sync 请求时，可以同时把 ack 和 sync 合并发送给 client。 而关闭连接需要四次是因为，server 接到 client 的 fin 请求并返回 ack 之后，并不一定要决定此时立刻马上也把自己关掉。 （这里就是前文提到的重要前提，因为 tcp 是全双工的，虽然你 client 不想和我连接了，但是我自己的事情还没处理完，比如server 还没接收完上次的发过来的数据等等），所以这时候并不一定会立刻返回fin 给 client，于是便有了四次握手。但是，并不一定不代表不会，猜想当 server 在收到 client 发送的 fin 之后发现自己也可以关掉连接了，于是有可能也会在返回 ack 时候同时返回 fin。这时候关闭连接实际上也是三次。 这也是我在 Stack Overflow 上看到有人问为什么 tcp 关闭连接时四次握手而不是三次握手底下看到的最简短的一个答案：It can， and sometimes it does!">
     <link rel="shortcut icon" href="/img/favicon.ico" />
+<style>
+    :root {
+        --article-font-family: "Noto Serif SC", var(--base-font-family);
+    }
+</style>
 
+<script>
+		(function () {
+		    const customFont = document.createElement('link');
+		    customFont.href = "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap";
+		
+		    customFont.type = "text/css";
+		    customFont.rel = "stylesheet";
+		
+		    document.head.appendChild(customFont);
+		}());
+</script>
     </head>
     <body class="
     article-page has-toc
