@@ -5,7 +5,6 @@ date: '2020-02-28'
 aliases:
   - about-me
   - contact
-lastmod: '2020-10-09'
 menu:
     main: 
         weight: -90
