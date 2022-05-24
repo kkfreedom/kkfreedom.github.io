@@ -15,7 +15,7 @@ aliases = ["migrate-from-jekyl"]
 image = "pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"
 +++
 
-# spy() @spy 和 mock() @mock的区别
+# spy 和 mock 的区别
  简单理解： 
 -  spy是partial mock，spy需要初始化，如果不手动初始化，mocktio默认调用**无参构造**初始化。
 -  如果Method没有被mock, spy默认调用真实方法，mock不会，对于有返回值的spy返回真实的返回值，mock返回null.
