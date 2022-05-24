@@ -26,5 +26,4 @@ menu:
 >  ——『暗时间-书写是为了更好的思考』
 
 
-
  **Keep looking, don't settle!**
