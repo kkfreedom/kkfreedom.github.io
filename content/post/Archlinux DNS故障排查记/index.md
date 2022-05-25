@@ -2,7 +2,7 @@
 title: "Archlinux DNS故障排查记"
 slug: 
 date: 2021-05-25T12:07:07+08:00
-draft: true
+draft: false
 image: cover.jpg
 categories:
     - 编程
