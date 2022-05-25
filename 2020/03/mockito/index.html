@@ -1,0 +1,379 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Java 单元测试框架 Mockito 学习笔记"><title>Mockito</title><link rel=canonical href=https://kkfreedom.github.io/2020/03/mockito/><link rel=stylesheet href=/scss/style.min.css><meta property="og:title" content="Mockito"><meta property="og:description" content="Java 单元测试框架 Mockito 学习笔记"><meta property="og:url" content="https://kkfreedom.github.io/2020/03/mockito/"><meta property="og:site_name" content="可可积木小屋"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Java"><meta property="article:tag" content="编程"><meta property="article:published_time" content="2020-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2020-03-11T00:00:00+00:00"><meta property="og:image" content="https://kkfreedom.github.io/2020/03/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"><meta name=twitter:title content="Mockito"><meta name=twitter:description content="Java 单元测试框架 Mockito 学习笔记"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://kkfreedom.github.io/2020/03/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"><link rel="shortcut icon" href=/img/favicon.ico><style>:root{--article-font-family:"Noto Serif SC", var(--base-font-family)}</style><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex
+on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header class=site-info><figure class=site-avatar><img src=/img/avatar_sun_hub2f995dd40e5756879d5cd1cf846e26e_9988_300x0_resize_q75_box.jpeg width=300 height=300 class=site-logo loading=lazy alt=Avatar></figure><h1 class=site-name><a href=/>可可积木小屋</a></h1><h2 class=site-description></h2><ol class=social-menu><li><a href=https://github.com/kkfreedom target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li></ol></header><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>主页</span></a></li><li><a href=/page/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>关于</span></a></li><li><a href=/page/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>归档</span></a></li><li><a href=/page/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>搜索</span></a></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></ol></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/2020/03/mockito/><img src=/2020/03/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg srcset="/2020/03/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_800x0_resize_q75_box.jpg 800w, /2020/03/mockito/pawel-czerwinski-8uZPynIu-rQ-unsplash_hud7e36f7e20e71be184458283bdae4646_55974_1600x0_resize_q75_box.jpg 1600w" width=800 height=534 loading=lazy alt="Featured image of post Mockito"></a></div><div class=article-details><h2 class=article-title><a href=/2020/03/mockito/>Mockito</a></h2><h3 class=article-subtitle>Java 单元测试框架 Mockito 学习笔记</h3><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Mar 11, 2020</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 3 分钟</time></div></footer></div></header><section class=article-content><h1 id=spy-和-mock-的区别>spy 和 mock 的区别</h1><p>简单理解：</p><ul><li>spy是partial mock，spy需要初始化，如果不手动初始化，mocktio默认调用<strong>无参构造</strong>初始化。</li><li>如果Method没有被mock, spy默认调用真实方法，mock不会，对于有返回值的spy返回真实的返回值，mock返回null.</li><li>对于spy，通常建议是用<code>doReturn|Answer|Throw()</code>方式打桩（stubbing），否则可能由于调用真实的方法而抛异常。</li></ul><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Java data-lang=Java><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testSpy</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// another option to spies a real object instead of annotation
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        List<span style=color:#5bc4bf>&lt;</span>String<span style=color:#5bc4bf>&gt;</span> list <span style=color:#5bc4bf>=</span> spy<span style=color:#5bc4bf>(</span><span style=color:#815ba4>new</span> ArrayList<span style=color:#5bc4bf>&lt;&gt;(</span>1<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// java.lang.IndexOutOfBoundsException
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        <span style=color:#776e71>// when(list.get(0)).thenReturn(&#34;three&#34;);
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        <span style=color:#776e71>// assertEquals(&#34;three&#34;, list.get(0));
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// right way to mock
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        doReturn<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>).</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>,</span> list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>,</span> atLeast<span style=color:#5bc4bf>(</span>1<span style=color:#5bc4bf>)).</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// can pass, so spies is actually a copy of real instance
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        assertTrue<span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>add</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;one&#34;</span><span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>,</span> list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>size</span><span style=color:#5bc4bf>());</span> <span style=color:#776e71>// 1
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>forEach</span><span style=color:#5bc4bf>(</span>System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>::</span>println<span style=color:#5bc4bf>);</span> <span style=color:#776e71>// one
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testMock</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        List list <span style=color:#5bc4bf>=</span> mock<span style=color:#5bc4bf>(</span>List<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// below both work fine
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        when<span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>)).</span><span style=color:#06b6ef>thenReturn</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>,</span> list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        doReturn<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>).</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>,</span> list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>add</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;one&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// assertTrue(list.add(&#34;one&#34;)); // java.lang.AssertionError
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;three&#34;</span><span style=color:#5bc4bf>,</span> list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>get</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span>list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>size</span><span style=color:#5bc4bf>());</span> <span style=color:#776e71>// 0
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        list<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>forEach</span><span style=color:#5bc4bf>(</span>System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>::</span>println<span style=color:#5bc4bf>);</span> <span style=color:#776e71>//
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#5bc4bf>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>但是，<code>doReturn</code>也有缺陷，<code>doReturn</code>可以接任意objects，所以是No type safety, <a class=link href=https://sangsoonam.github.io/2019/02/04/mockito-doreturn-vs-thenreturn.html target=_blank rel=noopener>参考</a></p><h1 id=mock一个object实际上会默认mock所有的方法>Mock一个object实际上会默认mock所有的方法</h1><p>如果方法没有被打桩，有返回值的默认返回null, 返回boolean值的默认返回false，返回int/integer的默认返回0，void方法默认do nothing。</p><p><a class=link href=https://www.cnblogs.com/softidea/p/4204389.html target=_blank rel=noopener>以下例子引用自</a></p><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>spy_Procession_Demo</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jack spyJack <span style=color:#5bc4bf>=</span> spy<span style=color:#5bc4bf>(</span><span style=color:#815ba4>new</span> Jack<span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>//使用spy的桩实现实际还是会调用stub的方法，只是返回了stub的值
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        when<span style=color:#5bc4bf>(</span>spyJack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>go</span><span style=color:#5bc4bf>()).</span><span style=color:#06b6ef>thenReturn</span><span style=color:#5bc4bf>(</span><span style=color:#815ba4>false</span><span style=color:#5bc4bf>);</span> <span style=color:#776e71>// I say go go go!!
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        assertFalse<span style=color:#5bc4bf>(</span>spyJack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>go</span><span style=color:#5bc4bf>());</span> 
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>spyJack<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>go</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>//不会调用stub的方法
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>        doReturn<span style=color:#5bc4bf>(</span><span style=color:#815ba4>false</span><span style=color:#5bc4bf>).</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>spyJack<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>go</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        assertFalse<span style=color:#5bc4bf>(</span>spyJack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>go</span><span style=color:#5bc4bf>());</span> <span style=color:#776e71>// nothing print
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>callRealMethodTest</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jerry jerry <span style=color:#5bc4bf>=</span> mock<span style=color:#5bc4bf>(</span>Jerry<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        doCallRealMethod<span style=color:#5bc4bf>().</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>jerry<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>goHome</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        doCallRealMethod<span style=color:#5bc4bf>().</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>jerry<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>doSomeThingB</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// doCallRealMethod().when(jerry).returnInteger();
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>
+</span></span><span style=display:flex><span>        jerry<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>goHome</span><span style=color:#5bc4bf>();</span> <span style=color:#776e71>// good day
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>,</span> jerry<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>returnInteger</span><span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>jerry<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>returnInteger</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>jerry<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>doSomeThingA</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>jerry<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>doSomeThingB</span><span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#815ba4>class</span> <span style=color:#fec418>Jack</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>boolean</span> <span style=color:#06b6ef>go</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;I say go go go!!&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>return</span> <span style=color:#815ba4>true</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span><span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#815ba4>class</span> <span style=color:#fec418>Jerry</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>goHome</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        doSomeThingA<span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>        doSomeThingB<span style=color:#5bc4bf>();</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#776e71>// real invoke it.
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>doSomeThingB</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;good day&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#776e71>// auto mock method by mockito
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>doSomeThingA</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;you should not see this message.&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>int</span> <span style=color:#06b6ef>returnInteger</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>return</span> 1<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span><span style=color:#5bc4bf>}</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=doanswer>doAnswer</h1><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testDoAnswer</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jack jack <span style=color:#5bc4bf>=</span> mock<span style=color:#5bc4bf>(</span>Jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        doAnswer<span style=color:#5bc4bf>((</span>Answer<span style=color:#5bc4bf>&lt;</span>String<span style=color:#5bc4bf>&gt;)</span> inv <span style=color:#5bc4bf>-&gt;</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>            String name <span style=color:#5bc4bf>=</span> inv<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getArgument</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>,</span> String<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>            name <span style=color:#5bc4bf>+=</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>            <span style=color:#815ba4>return</span> name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#5bc4bf>}).</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>jack<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>anyString<span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        String name <span style=color:#5bc4bf>=</span> <span style=color:#48b685>&#34;Leo&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span>name <span style=color:#5bc4bf>+</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>,</span> jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>name<span style=color:#5bc4bf>));</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span><span style=color:#815ba4>class</span> <span style=color:#fec418>Jack</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>private</span> String name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> String <span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>String name<span style=color:#5bc4bf>)</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>if</span> <span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;Jack&#34;</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>equals</span><span style=color:#5bc4bf>(</span>name<span style=color:#5bc4bf>))</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>            <span style=color:#815ba4>return</span> <span style=color:#48b685>&#34;Jackson&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>return</span> name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>boolean</span> <span style=color:#06b6ef>go</span><span style=color:#5bc4bf>()</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;I say go go go!!&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>return</span> <span style=color:#815ba4>true</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span><span style=color:#5bc4bf>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>use spy then test doAnswer, 由以下例子可以看出对于spy()，<code>doAnswer</code>不会调用真实方法，而<code>thenAnswer</code>会调用真实方法。</p><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testDoAnswer</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jack jack <span style=color:#5bc4bf>=</span> spy<span style=color:#5bc4bf>(</span>Jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        doAnswer<span style=color:#5bc4bf>((</span>Answer<span style=color:#5bc4bf>&lt;</span>String<span style=color:#5bc4bf>&gt;)</span> inv <span style=color:#5bc4bf>-&gt;</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>            String name <span style=color:#5bc4bf>=</span> inv<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getArgument</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>,</span> String<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>            name <span style=color:#5bc4bf>+=</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>            <span style=color:#815ba4>return</span> name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#5bc4bf>}).</span><span style=color:#06b6ef>when</span><span style=color:#5bc4bf>(</span>jack<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>anyString<span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        String name <span style=color:#5bc4bf>=</span> <span style=color:#48b685>&#34;Leo&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span>name <span style=color:#5bc4bf>+</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>,</span> jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>name<span style=color:#5bc4bf>));</span> <span style=color:#776e71>// passed but print nothing
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testDoAnswer</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jack jack <span style=color:#5bc4bf>=</span> spy<span style=color:#5bc4bf>(</span>Jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        when<span style=color:#5bc4bf>(</span>jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;Jack&#34;</span><span style=color:#5bc4bf>)).</span><span style=color:#06b6ef>thenAnswer</span><span style=color:#5bc4bf>((</span>Answer<span style=color:#5bc4bf>&lt;</span>String <span style=color:#5bc4bf>&gt;)</span> invocation <span style=color:#5bc4bf>-&gt;</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>            String name <span style=color:#5bc4bf>=</span> invocation<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getArgument</span><span style=color:#5bc4bf>(</span>0<span style=color:#5bc4bf>,</span> String<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>            <span style=color:#815ba4>return</span> name <span style=color:#5bc4bf>+</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#5bc4bf>});</span> <span style=color:#776e71>// print: real invoke!!
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>
+</span></span><span style=display:flex><span>        String name <span style=color:#5bc4bf>=</span> <span style=color:#48b685>&#34;Leo&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span>name <span style=color:#5bc4bf>+</span> <span style=color:#48b685>&#34;_suffix&#34;</span><span style=color:#5bc4bf>,</span> jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>name<span style=color:#5bc4bf>));</span> 
+</span></span><span style=display:flex><span>        <span style=color:#776e71>// tests failed, print real invoke!! expeced: Leo_suffix Actual: Leo
+</span></span></span><span style=display:flex><span><span style=color:#776e71></span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#815ba4>class</span> <span style=color:#fec418>Jack</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>private</span> String name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> String <span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>String name<span style=color:#5bc4bf>)</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        System<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>out</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>println</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;real invoke!!&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>if</span> <span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;Jack&#34;</span><span style=color:#5bc4bf>.</span><span style=color:#06b6ef>equals</span><span style=color:#5bc4bf>(</span>name<span style=color:#5bc4bf>))</span> <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>            <span style=color:#815ba4>return</span> <span style=color:#48b685>&#34;Jackson&#34;</span><span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>        <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span>        <span style=color:#815ba4>return</span> name<span style=color:#5bc4bf>;</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span><span style=display:flex><span><span style=color:#5bc4bf>}</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=argumentcaptor>ArgumentCaptor</h1><p>使用<em>ArgumentCaptor</em>可以断言方法的参数</p><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span>    <span style=color:#5bc4bf>@Test</span>
+</span></span><span style=display:flex><span>    <span style=color:#815ba4>public</span> <span style=color:#fec418>void</span> <span style=color:#06b6ef>testArgCaptor</span><span style=color:#5bc4bf>()</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>{</span>
+</span></span><span style=display:flex><span>        Jack jack <span style=color:#5bc4bf>=</span> mock<span style=color:#5bc4bf>(</span>Jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        ArgumentCaptor<span style=color:#5bc4bf>&lt;</span>String <span style=color:#5bc4bf>&gt;</span> argument <span style=color:#5bc4bf>=</span> ArgumentCaptor<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>forClass</span><span style=color:#5bc4bf>(</span>String<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        String rename <span style=color:#5bc4bf>=</span> jack<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;Jack&#34;</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>        verify<span style=color:#5bc4bf>(</span>jack<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>rename</span><span style=color:#5bc4bf>(</span>argument<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>capture</span><span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>        assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;should be Jack&#34;</span><span style=color:#5bc4bf>,</span> <span style=color:#48b685>&#34;Jack&#34;</span><span style=color:#5bc4bf>,</span> argument<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getValue</span><span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>    <span style=color:#5bc4bf>}</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li>值得注意的是，通常<em>ArgumentCaptor</em>使用在verfify中而不是在打桩时候，Mockito官方文档给出的例子是，如果想在打桩时候使用<strong>ArgumentMatcher</strong>更适合。</li></ul><div class=highlight><div style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#e7e9db;background-color:#2f1e2e;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=display:flex><span>   ArgumentCaptor<span style=color:#5bc4bf>&lt;</span>Person<span style=color:#5bc4bf>&gt;</span> argument <span style=color:#5bc4bf>=</span> ArgumentCaptor<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>forClass</span><span style=color:#5bc4bf>(</span>Person<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>class</span><span style=color:#5bc4bf>);</span>
+</span></span><span style=display:flex><span>   verify<span style=color:#5bc4bf>(</span>mock<span style=color:#5bc4bf>).</span><span style=color:#06b6ef>doSomething</span><span style=color:#5bc4bf>(</span>argument<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>capture</span><span style=color:#5bc4bf>());</span>
+</span></span><span style=display:flex><span>   assertEquals<span style=color:#5bc4bf>(</span><span style=color:#48b685>&#34;John&#34;</span><span style=color:#5bc4bf>,</span> argument<span style=color:#5bc4bf>.</span><span style=color:#06b6ef>getValue</span><span style=color:#5bc4bf>().</span><span style=color:#06b6ef>getName</span><span style=color:#5bc4bf>());</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p><strong>Warning:</strong> it is recommended to use ArgumentCaptor with verification <strong>but not</strong> with stubbing. Using ArgumentCaptor with stubbing may decrease test readability because captor is created outside of assert (aka verify or &rsquo;then&rsquo;) block. Also it may reduce defect localization because if stubbed method was not called then no argument is captured.
+In a way ArgumentCaptor is related to custom argument matchers (see javadoc for <a class=link href=https://javadoc.io/static/org.mockito/mockito-core/3.7.7/org/mockito/ArgumentMatcher.html title="interface in org.mockito" target=_blank rel=noopener><code>ArgumentMatcher</code></a> class). Both techniques can be used for making sure certain arguments were passed to mocks. However, ArgumentCaptor may be a better fit if:</p><ul><li>custom argument matcher is not likely to be reused</li><li>you just need it to assert on argument values to complete verification
+Custom argument matchers via <a class=link href=https://javadoc.io/static/org.mockito/mockito-core/3.7.7/org/mockito/ArgumentMatcher.html title="interface in org.mockito" target=_blank rel=noopener><code>ArgumentMatcher</code></a> are usually better for stubbing.</li></ul></blockquote><p>以下引用的例子用来解释为什么打桩时候使用<strong>ArgumentMatcher</strong>更适合。</p><blockquote><p>Assuming the following method to test:
+<code>public boolean doSomething(SomeClass arg);</code>
+Mockito documentation says that you should not use captor in this way:
+<code>when(someObject.doSomething(argumentCaptor.capture())).thenReturn(true);</code>
+<code>assertThat(argumentCaptor.getValue(), equalTo(expected));</code>
+Because you can just use matcher during stubbing:
+<code>when(someObject.doSomething(eq(expected))).thenReturn(true);</code></p></blockquote></section><footer class=article-footer><section class=article-tags><a href=/tags/java/>Java</a>
+<a href=/tags/%E7%BC%96%E7%A8%8B/>编程</a></section></footer></article><aside class=related-contents--wrapper><h2 class=section-title>相关文章</h2><div class=related-contents><div class="flex article-list--tile"><article class=has-image><a href=/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/><div class=article-image><img src=/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/_hu958d513eeefe5556a31d065479ecc5ac_14205_7bffa90d1e66ca9b8184fda08a99dc7e.jpg width=250 height=150 loading=lazy data-key data-hash="md5-jq4GZk3fs+jcbgAHVstwOw=="></div><div class=article-details><h2 class=article-title>Gradle实操笔记</h2></div></a></article><article class=has-image><a href=/2020/03/java-%E5%8F%8D%E5%B0%84/><div class=article-image><img src=/2020/03/java-%E5%8F%8D%E5%B0%84/cover.dd9f54da301211149c38a10a8b5ad3ad_hu91c90233d97d863d69aeb06e3f7d9c8a_29651_250x150_fill_q75_box_smart1.jpeg width=250 height=150 loading=lazy data-key data-hash="md5-3Z9U2jASERScOKEKi1rTrQ=="></div><div class=article-details><h2 class=article-title>Java 反射</h2></div></a></article><article class=has-image><a href=/2019/09/tcp%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%96%AD%E5%BC%80/><div class=article-image><img src=/2019/09/tcp%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%96%AD%E5%BC%80/cover.3728b6b6afea3be08afe8fcf0ec75049_hue960b704251fe56a5e22d487c660ab17_665080_250x150_fill_q75_box_smart1.jpg width=250 height=150 loading=lazy data-key=TCP的三次握手和四次断开 data-hash="md5-Nyi2tq/qO+CK/o/PDsdQSQ=="></div><div class=article-details><h2 class=article-title>TCP的三次握手和四次断开</h2></div></a></article></div></div></aside><footer class=site-footer><section class=copyright>&copy;
+2019 -
+2022 可可积木小屋</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.5.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g=" crossorigin=anonymous defer></script><script type=text/javascript src=/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
