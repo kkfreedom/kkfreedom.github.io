@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>可可积木小屋</title><link>https://kkfreedom.github.io/</link><description>Recent content on 可可积木小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 09 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kkfreedom.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Gradle实操笔记</title><link>https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</link><pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate><guid>https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</guid><description>&lt;img src="https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post Gradle实操笔记" />&lt;p>Gradle在Java开发中可以作为项目构建工具，相比于Maven，Gradle构建更加快速，没有复杂的xml文件，取而代之的是通过脚本完成诸如依赖管理，项目构建配置，插件配置等功能。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>可可积木小屋</title><link>https://kkfreedom.github.io/</link><description>Recent content on 可可积木小屋</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 May 2021 12:07:07 +0800</lastBuildDate><atom:link href="https://kkfreedom.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Archlinux DNS故障排查记</title><link>https://kkfreedom.github.io/2021/05/archlinux-dns%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E8%AE%B0/</link><pubDate>Tue, 25 May 2021 12:07:07 +0800</pubDate><guid>https://kkfreedom.github.io/2021/05/archlinux-dns%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E8%AE%B0/</guid><description>&lt;img src="https://kkfreedom.github.io/2021/05/archlinux-dns%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E8%AE%B0/cover.jpg" alt="Featured image of post Archlinux DNS故障排查记" />&lt;h1 id="起因">起因&lt;/h1>
+&lt;p>新装的arch没用几天，印象里除了例行的yay -Syu滚动更新以外， 没有做其他的设置。突然某一天，konsole中ping不通google和github了，甚至于baidu也不能ping，奇怪的是，浏览器可以正常访问。&lt;/p>
+&lt;h1 id="排查">排查&lt;/h1>
+&lt;p>于是开启了漫长的排查和搜索。首先想到的是DNS出问题了，因为konsole中ping IP是能ping通的。接着尝试了以下方法：&lt;/p>
+&lt;ul>
+&lt;li>手动设置8.8.8.8等DNS服务器到/etc/resolv.conf中。随后发现该文件每次都会被网络托管的NetworkManager覆盖回去。遂再一次修改之后，执行chattr +i /etc/resolv.conf，禁止被修改。-未果&lt;/li>
+&lt;li>添加rc.conf文件，手动添加网卡进去interface=eth0 -未果&lt;/li>
+&lt;li>在/etc/hosts中添加本地DNS映射 -方向错误，不能解决这次的问题
+再尝试以上全部失败后，一次尝试安装一款DNS分析软件过程中，意外的发现连不到任何的镜像服务器。于是开始怀疑是cgproxy配置的全局代理导致的问题。systemctl stop cgproxy 之后终于ping通了baidu。&lt;/li>
+&lt;/ul>
+&lt;h1 id="解决">解决&lt;/h1>
+&lt;p>虽然关掉cgproxy之后可以正常ping了，但是全局代理不能不要哇。再重复阅读Arch安装文档后发现一个关键点：&lt;/p>
+&lt;blockquote>
+&lt;p>(重要）如果启用了 udp 的透明代理（dns 也是 udp），则给 v2ray 二进制文件加上相应的特权：&lt;code>sudo setcap &amp;quot;cap_net_admin, cap_net_bind_service=ep&amp;quot; /usr/bin/v2ray &lt;/code>
+否则 udp 的透明代理可能会出问题。
+如果每次更新了 v2ray 二进制文件，都需要重新执行此命令。&lt;/p>
+&lt;/blockquote>
+&lt;p>重点就是每次更新v2ray二进制文件后都需要重新加特权，重启之后一起恢复正常。&lt;/p>
+&lt;h1 id="复盘">复盘&lt;/h1>
+&lt;ol>
+&lt;li>文档很重要。在后续查看文档之后，了解到v2ray在选中某些配置后（DNS拦截，udp透明代理）会将DNS托管给v2ray内置的DNS服务器。猜测是滚动更新连带更新了v2ray却没有赋权导致内部DNS服务异常。&lt;/li>
+&lt;li>遇到问题应该一开始就查看相应的文档，而不是google，网上其他人的解决方案没有详细的上下文，往往并不适用。&lt;/li>
+&lt;li>找准方向，一击破之。&lt;/li>
+&lt;li>及时快照保存当前稳定的系统。&lt;/li>
+&lt;/ol></description></item><item><title>Gradle实操笔记</title><link>https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</link><pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate><guid>https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/</guid><description>&lt;img src="https://kkfreedom.github.io/2020/07/gradle%E5%AE%9E%E6%93%8D%E7%AC%94%E8%AE%B0/matt-le-SJSpo9hQf7s-unsplash.jpg" alt="Featured image of post Gradle实操笔记" />&lt;p>Gradle在Java开发中可以作为项目构建工具，相比于Maven，Gradle构建更加快速，没有复杂的xml文件，取而代之的是通过脚本完成诸如依赖管理，项目构建配置，插件配置等功能。
 Gradle官网提供了详细的文档，&lt;a class="link" href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener"
 >Gradle Document&lt;/a>，本文记录的是个人在学习以及使用Gradle过程中，使用到的特性以及遇到问题的解决办法。&lt;/p>
 &lt;ul>
