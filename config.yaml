@@ -19,8 +19,9 @@ DefaultContentLanguage: zh-cn
 hasCJKLanguage: true
 
 permalinks:
-    post: /p/:slug/
-    page: /:slug/
+    # post: /p/:slug/
+    post: /:year/:month/:slug/
+    # page: /:slug/
 
 params:
     mainSections:
@@ -134,7 +135,7 @@ params:
             - tag-cloud
 
         archives:
-            limit: 5
+            limit: 10
 
         tagCloud:
             limit: 5
@@ -187,11 +188,11 @@ menu:
           params:
             icon: brand-github
             
-        - identifier: instagram
-          name: Instagram
-          url: https://instagram.com/fengchaop/
-          params:
-            icon: brand-instagram
+        # - identifier: instagram
+        #   name: Instagram
+        #   url: https://instagram.com/fengchaop/
+        #   params:
+        #     icon: brand-instagram
 
 related:
     includeNewer: true
@@ -214,8 +215,20 @@ markup:
         ordered: true
         startLevel: 2
     highlight:
-        noClasses: true
-        codeFences: true
-        guessSyntax: true
-        lineNos: true
+        # noClasses: true
+        # codeFences: true
+        # guessSyntax: true
+        # lineNos: true
         # style: native
+        anchorLineNos: false
+        codeFences: true
+        guessSyntax: false
+        hl_Lines: ""
+        lineAnchors: ""
+        lineNoStart: 1
+        lineNos: true
+        lineNumbersInTable: true
+        noClasses: true
+        noHl: false
+        style: paraiso-dark
+        tabWidth: 4

@@ -1,7 +1,7 @@
 +++
 author = ""
 title = "Java 反射"
-date = "2019-03-05"
+date = "2020-03-05"
 description = "通过反射给没有 setter 方法的属性赋值，包括父类属性"
 categories = [
     "编程"

@@ -1,0 +1,13 @@
+<article>
+    <!-- this <div> includes the title summary -->
+    <p>
+      <!-- <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2> -->
+      {{ .Summary }}
+    </p>
+    {{ if .Truncated }}
+    <!-- This <div> includes a read more link, but only if the summary is truncated... -->
+    <p>
+      <a href="{{ .RelPermalink }}" class="read-more-link">Read More</a>
+    </p>
+    {{ end }}
+  </article>

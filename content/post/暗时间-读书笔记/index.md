@@ -1,9 +1,9 @@
 ---
 title: 暗时间-读书笔记
-date: 2020-09-09
+date: 2019-03-09
 slug: 暗时间-读书笔记
 image: cover.jpeg
-match: true
+math: true
 categories:
     - 读书
 ---
