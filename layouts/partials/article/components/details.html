@@ -1,5 +1,5 @@
 <div class="article-details">
-    <!-- {{ if .Params.categories }}
+    {{ if .Params.categories }}
     <header class="article-category">
         {{ range (.GetTerms "categories") }}
             <a href="{{ .RelPermalink }}" {{ with .Params.style }}style="background-color: {{ .background }}; color: {{ .color }};"{{ end }}>
@@ -7,7 +7,7 @@
             </a>
         {{ end }}
     </header>
-    {{ end }} -->
+    {{ end }}
 
     <h2 class="article-title">
         <a href="{{ .RelPermalink }}">
@@ -20,8 +20,13 @@
         {{ . }}
     </h3>
     {{ end }}
+
     <!-- added by Leo -->
-    <!-- {{- partial "summary/page-list-with-summaries.html" . -}} -->
+    <!-- {{ if .Site.Params.article }}
+        {{- partial "summary/page-list-with-summaries.html" . -}}
+    {{ end }} -->
+    
+    
 
     {{ if or (not .Date.IsZero) (.Site.Params.article.readingTime) }}
     <footer class="article-time">
