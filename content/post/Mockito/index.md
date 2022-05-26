@@ -12,7 +12,7 @@ categories = [
 ]
 series = ["Themes Guide"]
 aliases = ["migrate-from-jekyl"]
-image = "pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"
+image = "cover.jpg"
 +++
 
 # spy 和 mock 的区别

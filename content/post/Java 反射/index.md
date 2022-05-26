@@ -10,7 +10,7 @@ tags = [
     "编程",
     "Java"
 ]
-image = "cover.jpeg"
+image = "cover.jpg"
 +++
 
 # 需求

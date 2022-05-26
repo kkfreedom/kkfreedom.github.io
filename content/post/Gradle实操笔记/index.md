@@ -10,7 +10,7 @@ tags = [
     "编程",
     "Java"
 ]
-image = "matt-le-SJSpo9hQf7s-unsplash.jpg"
+image = "cover.jpg"
 +++
 
 Gradle在Java开发中可以作为项目构建工具，相比于Maven，Gradle构建更加快速，没有复杂的xml文件，取而代之的是通过脚本完成诸如依赖管理，项目构建配置，插件配置等功能。
