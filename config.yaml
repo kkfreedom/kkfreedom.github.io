@@ -181,12 +181,12 @@ menu:
               newTab: false
               icon: home
     
-    social:
-        - identifier: github
-          name: GitHub
-          url: https://github.com/kkfreedom
-          params:
-            icon: brand-github
+    # social:
+        # - identifier: github
+        #   name: GitHub
+        #   url: https://github.com/kkfreedom
+        #   params:
+        #     icon: brand-github
             
         # - identifier: instagram
         #   name: Instagram
